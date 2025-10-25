@@ -1,124 +1,115 @@
 #!/bin/bash
-
-# Open-LLM-VTuber-Core GitHub 仓库设置脚本
-# 使用方法: ./setup_github.sh
-
 set -e
 
-# 颜色定义
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
-
-# 项目信息
-PROJECT_NAME="Open-LLM-VTuber-Core"
-GITHUB_USERNAME="griteetan-888"
 REPO_NAME="Open-LLM-VTuber-Core"
+REPO_DESC="Open-LLM-VTuber Core - 精简版VTuber AI聊天系统"
+GITHUB_USER="griteetan-888"
 
-echo -e "${BLUE}🚀 设置 Open-LLM-VTuber-Core GitHub 仓库${NC}"
+echo "🚀 设置 $REPO_NAME GitHub 仓库"
 echo "=================================================="
 
-# 检查是否在正确的目录
-if [ ! -f "conf.yaml" ]; then
-    echo -e "${RED}❌ 错误: 请在项目根目录运行此脚本${NC}"
-    exit 1
-fi
-
-# 检查Git状态
-if [ ! -d ".git" ]; then
-    echo -e "${RED}❌ 错误: 未找到Git仓库，请先运行 git init${NC}"
-    exit 1
-fi
-
-# 检查是否有未提交的更改
-if [ -n "$(git status --porcelain)" ]; then
-    echo -e "${YELLOW}⚠️  警告: 检测到未提交的更改${NC}"
-    echo "请先提交所有更改，然后重新运行此脚本"
-    exit 1
-fi
-
-echo -e "${GREEN}✅ Git仓库状态正常${NC}"
-
-# 创建GitHub仓库（需要GitHub CLI）
-if command -v gh &> /dev/null; then
-    echo -e "${BLUE}📦 使用GitHub CLI创建仓库...${NC}"
-    
-    # 检查仓库是否已存在
-    if gh repo view "$GITHUB_USERNAME/$REPO_NAME" &> /dev/null; then
-        echo -e "${YELLOW}⚠️  仓库 $GITHUB_USERNAME/$REPO_NAME 已存在${NC}"
-        read -p "是否要重新创建？这将删除现有仓库 (y/N): " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            echo -e "${YELLOW}🗑️  删除现有仓库...${NC}"
-            gh repo delete "$GITHUB_USERNAME/$REPO_NAME" --yes
-        else
-            echo -e "${BLUE}📝 使用现有仓库...${NC}"
-        fi
-    fi
-    
-    # 创建仓库
-    echo -e "${BLUE}🆕 创建GitHub仓库...${NC}"
-    gh repo create "$REPO_NAME" \
-        --public \
-        --description "Open-LLM-VTuber Core - 精简版VTuber AI聊天系统" \
-        --add-readme \
-        --clone=false
-    
-    echo -e "${GREEN}✅ GitHub仓库创建成功${NC}"
+########################################
+# 1. 确认当前目录是 git 仓库
+########################################
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  echo "❌ 当前目录还不是 Git 仓库，正在初始化..."
+  git init
+  git add .
+  git commit -m "Initial commit"
 else
-    echo -e "${YELLOW}⚠️  未找到GitHub CLI (gh)${NC}"
-    echo "请手动在GitHub上创建仓库: https://github.com/new"
-    echo "仓库名称: $REPO_NAME"
-    echo "描述: Open-LLM-VTuber Core - 精简版VTuber AI聊天系统"
-    echo "设置为公开仓库"
-    echo ""
-    read -p "创建完成后按Enter继续..."
+  echo "✅ Git 仓库状态正常"
 fi
 
-# 添加远程仓库
-echo -e "${BLUE}🔗 添加远程仓库...${NC}"
-git remote add origin "https://github.com/$GITHUB_USERNAME/$REPO_NAME.git" 2>/dev/null || {
-    echo -e "${YELLOW}⚠️  远程仓库已存在，更新URL...${NC}"
-    git remote set-url origin "https://github.com/$GITHUB_USERNAME/$REPO_NAME.git"
+# 确保当前分支叫 main
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [ "$CURRENT_BRANCH" != "main" ]; then
+  echo "🔁 将当前分支重命名为 main..."
+  git branch -M main
+fi
+
+########################################
+# helper: 统一函数
+########################################
+
+set_remote_ssh () {
+  echo "🔗 使用 SSH 配置远程仓库..."
+  git remote remove origin 2>/dev/null || true
+  git remote add origin "git@github.com:${GITHUB_USER}/${REPO_NAME}.git"
+  echo "✅ origin -> git@github.com:${GITHUB_USER}/${REPO_NAME}.git"
 }
 
-# 推送代码到GitHub
-echo -e "${BLUE}📤 推送代码到GitHub...${NC}"
-git push -u origin main
+push_main () {
+  echo "📤 推送 main 到 GitHub..."
+  git push -u origin main
+  echo "✨ 推送完成"
+}
 
-# 创建初始标签
-echo -e "${BLUE}🏷️  创建版本标签...${NC}"
-git tag -a v1.2.0 -m "Release version 1.2.0 - 初始版本"
-git push origin v1.2.0
+########################################
+# 2. 优先使用 GitHub CLI (gh)
+########################################
+if command -v gh >/dev/null 2>&1; then
+  echo "✅ 检测到 GitHub CLI (gh)"
 
-# 创建develop分支
-echo -e "${BLUE}🌿 创建develop分支...${NC}"
-git checkout -b develop
-git push -u origin develop
-git checkout main
+  # 2.1 是否已经登录 gh
+  if ! gh auth status >/dev/null 2>&1; then
+    echo "⚠️  gh 还没有登录，开始登录流程..."
+    gh auth login
+  else
+    echo "✅ gh 已登录"
+  fi
+
+  # 2.2 如果 GitHub 上还没有这个仓库，就创建它
+  if ! gh repo view "${GITHUB_USER}/${REPO_NAME}" >/dev/null 2>&1; then
+    echo "📦 远程仓库不存在，正在创建 GitHub 仓库 ${GITHUB_USER}/${REPO_NAME} ..."
+    gh repo create "${GITHUB_USER}/${REPO_NAME}" \
+      --public \
+      --description "${REPO_DESC}" \
+      --source . \
+      --remote origin \
+      --push
+    echo "✅ 仓库已创建并首次推送完成"
+    exit 0
+  else
+    echo "ℹ️ 远程仓库已存在，跳过创建步骤"
+  fi
+
+  # 2.3 如果仓库已经存在：我们只需要把远程指到 SSH 并推送
+  set_remote_ssh
+  push_main
+  exit 0
+fi
+
+########################################
+# 3. 没有 gh → 使用 Personal Access Token 走 HTTPS
+########################################
+echo "⚠️  未检测到 gh (GitHub CLI)。"
+echo "👉  两个选择："
+echo "   (A) 推荐：安装 gh 再跑一次脚本，比如: brew install gh"
+echo "   (B) 现在就推，用 Personal Access Token (PAT)"
+
+read -p "是否现在使用 PAT 推送? [y/N]: " USE_PAT
+if [[ "$USE_PAT" != "y" && "$USE_PAT" != "Y" ]]; then
+  echo "❌ 已取消推送。安装 gh 后重新运行本脚本即可自动创建并推送。"
+  exit 1
+fi
 
 echo ""
-echo -e "${GREEN}🎉 GitHub仓库设置完成！${NC}"
-echo "=================================================="
-echo -e "${BLUE}📋 仓库信息:${NC}"
-echo "  • 仓库URL: https://github.com/$GITHUB_USERNAME/$REPO_NAME"
-echo "  • 主分支: main"
-echo "  • 开发分支: develop"
-echo "  • 当前版本: v1.2.0"
-echo ""
-echo -e "${BLUE}📝 下一步操作:${NC}"
-echo "  1. 访问 https://github.com/$GITHUB_USERNAME/$REPO_NAME"
-echo "  2. 配置仓库设置（分支保护、协作者等）"
-echo "  3. 创建第一个Issue或Pull Request"
-echo "  4. 开始开发新功能"
-echo ""
-echo -e "${BLUE}🔧 常用命令:${NC}"
-echo "  • 查看状态: git status"
-echo "  • 创建功能分支: git checkout -b feature/新功能名称"
-echo "  • 提交更改: git add . && git commit -m 'feat: 描述'"
-echo "  • 推送分支: git push origin 分支名称"
-echo "  • 创建PR: 在GitHub网页上创建Pull Request"
-echo ""
-echo -e "${GREEN}✨ 版本控制管理系统已就绪！${NC}"
+echo "🔐 请输入你的 GitHub Personal Access Token (PAT)"
+echo "   生成方式: GitHub -> Settings -> Developer settings -> Personal access tokens -> Tokens (classic)"
+echo "   需要至少勾选 repo 权限"
+read -p "PAT: " PAT
+
+if [ -z "$PAT" ]; then
+  echo "❌ 没有输入 PAT，中止。"
+  exit 1
+fi
+
+# 如果远程没建，你需要先在网页手动建一个空仓库：
+# https://github.com/new  名称: $REPO_NAME  公开: Public
+# 之后我们只负责设 remote+push
+echo "🔗 配置 HTTPS 远程 (内嵌 Token，不会再问你密码)..."
+git remote remove origin 2>/dev/null || true
+git remote add origin "https://${GITHUB_USER}:${PAT}@github.com/${GITHUB_USER}/${REPO_NAME}.git"
+echo "✅ origin -> https://github.com/${GITHUB_USER}/${REPO_NAME}.git"
+
+push_main
