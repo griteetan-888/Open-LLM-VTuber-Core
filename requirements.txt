@@ -1,0 +1,40 @@
+# Core dependencies for Open-LLM-VTuber
+fastapi>=0.115.8
+uvicorn[standard]>=0.33.0
+websockets>=15.0.1
+websocket-client>=1.8.0
+
+# LLM providers
+openai>=1.57.4
+anthropic>=0.40.0
+groq>=0.13.0
+httpx>=0.28.1
+
+# TTS engines
+edge-tts>=7.0.0
+pyttsx3>=2.98
+azure-cognitiveservices-speech>=1.41.1
+
+# ASR engines
+sherpa-onnx>=1.10.39
+onnxruntime>=1.20.1
+
+# Audio processing
+soundfile>=0.12.1
+pydub>=0.25.1
+numpy>=1.26.4,<2
+scipy>=1.14.1
+
+# Text processing
+pysbd>=0.3.4
+langdetect>=1.0.9
+
+# Configuration
+pyyaml>=6.0.2
+ruamel-yaml>=0.18.10
+tomli>=2.2.1
+
+# Utilities
+loguru>=0.7.2
+requests>=2.32.3
+tqdm>=4.67.1

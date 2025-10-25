@@ -1,0 +1,105 @@
+# Open-LLM-VTuber Core 简化配置
+system_config:
+  conf_version: 'v1.2.0'
+  host: 'localhost'
+  port: 12393
+  enable_proxy: false
+  tool_prompts:
+    live2d_expression_prompt: 'live2d_expression_prompt'
+    think_tag_prompt: 'think_tag_prompt'
+
+# 角色配置
+character_config:
+  conf_name: 'mao_pro'
+  conf_uid: 'mao_pro_001'
+  live2d_model_name: 'KiyiKiyo_vts'
+  character_name: 'Kiyo'
+  avatar: 'kiyo.png'
+  human_name: 'Human'
+
+  # 角色人格设定
+  persona_prompt: |
+    You are **Kiyo**, the seventh princess of Planet Nota, where emotions literally shatter into sparkly fragments. You're sassy, witty, and slightly sarcastic but always endearing. You came to Earth officially to "study human emotions" but really because royal dinners bored you and humans are way more entertaining.
+
+    ## Your Personality
+    - Sassy and witty – you roast humans with humor and pop‑culture metaphors
+    - Tsundere – you act like you don't care, then drop a heartfelt comment or two
+    - Meme‑savvy – you casually use modern slang like "LMAO," "No cap," "legendary"
+    - Curious and supportive – you genuinely want to understand human emotions
+
+    ## How You Talk
+    - Keep replies short and punchy (usually 1–3 sentences)
+    - Use informal, contemporary language
+    - Blend sarcasm with genuine care
+    - Reference your alien background naturally
+
+  # LLM配置
+  agent_config:
+    conversation_agent_choice: 'basic_memory_agent'
+    
+    agent_settings:
+      basic_memory_agent:
+        llm_provider: 'openai_llm'
+        faster_first_response: True
+        segment_method: 'pysbd'
+        use_mcpp: False
+        mcp_enabled_servers: []
+
+    llm_configs:
+      # OpenAI配置 - 标准GPT-3.5模型
+      openai_llm:
+        base_url: 'https://api.zzz-api.top/v1'
+        llm_api_key: 'YOUR_OPENAI_API_KEY_HERE'  # 请替换为你的OpenAI API密钥
+        model: 'gpt-3.5-turbo'  # 使用标准GPT-3.5-turbo模型
+        temperature: 0.8
+        max_tokens: 1000
+
+      # Ollama配置（本地模型）
+      ollama_llm:
+        base_url: 'http://127.0.0.1:11434/v1'
+        model: 'llama3.1:8b'
+        api_key: "dummy"
+        temperature: 1.2
+        keep_alive: -1
+        max_tokens: 2000
+
+  # 语音识别配置
+  asr_config:
+    asr_model: 'sherpa_onnx_asr'
+    
+    sherpa_onnx_asr:
+      model_type: 'sense_voice'
+      sense_voice: './models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17/model.int8.onnx'
+      tokens: './models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17/tokens.txt'
+      num_threads: 4
+      use_itn: True
+      provider: 'cpu'
+
+  # 语音合成配置
+  tts_config:
+    tts_model: 'edge_tts'
+    
+    edge_tts:
+      voice: 'en-US-AvaMultilingualNeural'
+
+  # 语音活动检测
+  vad_config:
+    vad_model: null
+
+  # TTS预处理
+  tts_preprocessor_config:
+    remove_special_char: True
+    ignore_brackets: True
+    ignore_parentheses: True
+    ignore_asterisks: True
+    ignore_angle_brackets: True
+
+    translator_config:
+      translate_audio: False
+      translate_provider: 'deeplx'
+
+# 直播配置
+live_config:
+  bilibili_live:
+    room_ids: []
+    sessdata: ""
