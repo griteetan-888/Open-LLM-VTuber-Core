@@ -1,0 +1,46 @@
+{
+  "test_timestamp": 1761360547.498353,
+  "test_audio_duration": 3.0,
+  "test_audio_samples": 48000,
+  "mac_gpu_available": true,
+  "tests": [
+    {
+      "provider": "mac_gpu",
+      "processing_time": 2.002716064453125e-05,
+      "transcription_length": 0,
+      "transcription": "",
+      "stats": {
+        "error": "no_data"
+      },
+      "gpu_info": {
+        "architecture": "x86_64",
+        "system": "Darwin",
+        "processor": "i386",
+        "python_version": "3.13.3",
+        "gpu_model": "Apple M4",
+        "gpu_cores": "10",
+        "metal_version": "Metal 3"
+      },
+      "success": true
+    },
+    {
+      "provider": "cpu",
+      "processing_time": 1.811981201171875e-05,
+      "transcription_length": 0,
+      "transcription": "",
+      "stats": {
+        "error": "no_data"
+      },
+      "success": true
+    }
+  ],
+  "performance_comparison": {
+    "mac_gpu_processing_time": 2.002716064453125e-05,
+    "cpu_processing_time": 1.811981201171875e-05,
+    "speedup_factor": 0.9047619047619048,
+    "time_saved_seconds": -1.9073486328125e-06,
+    "efficiency_gain_percent": -10.526315789473683,
+    "performance_grade": "D (无显著加速)",
+    "recommendation": "❌ Mac GPU加速效果不明显，建议使用CPU模式"
+  }
+}

@@ -1,0 +1,158 @@
+# 智能记忆系统配置
+memory_system:
+  # 基础配置
+  enabled: true
+  max_memory_items: 1000
+  compression_threshold: 0.3
+  memory_file_path: "memory/memories.json"
+  summary_file_path: "memory/summaries.json"
+  
+  # 压缩配置
+  compression:
+    enabled: true
+    auto_compress_interval_hours: 24
+    compression_ratio: 0.7
+    retention_period_days: 30
+    importance_threshold: 0.5
+    age_decay_factor: 0.1
+    access_frequency_weight: 0.3
+  
+  # 记忆类型权重
+  memory_type_weights:
+    conversation: 0.3
+    fact: 0.8
+    preference: 0.9
+    emotion: 0.7
+    context: 0.6
+  
+  # 检索配置
+  retrieval:
+    context_limit: 5
+    relevance_threshold: 0.3
+    max_search_results: 10
+    enable_semantic_search: false  # 未来功能
+  
+  # 性能优化
+  performance:
+    batch_size: 10
+    processing_delay_ms: 100
+    enable_async_processing: true
+    cache_size: 100
+  
+  # 导出/导入配置
+  export:
+    default_format: "json"
+    include_metadata: true
+    compress_export: false
+  
+  # 监控配置
+  monitoring:
+    enable_statistics: true
+    log_memory_operations: true
+    performance_tracking: true
+    memory_usage_alerts: true
+    alert_threshold_percent: 80
+
+# Agent记忆增强配置
+agent_memory_enhancement:
+  # 基础设置
+  enable_memory_compression: true
+  memory_context_limit: 5
+  auto_process_conversations: true
+  
+  # 记忆集成
+  integrate_memories_in_prompts: true
+  memory_prompt_template: |
+    [相关记忆上下文]
+    {memory_context}
+  
+  # 对话处理
+  process_on_conversation_end: true
+  extract_memories_automatically: true
+  compress_old_memories_automatically: true
+  
+  # 性能设置
+  memory_processing_batch_size: 5
+  async_memory_processing: true
+  memory_cache_size: 50
+
+# 记忆类型特定配置
+memory_types:
+  conversation:
+    importance_base: 0.3
+    decay_rate: 0.05
+    max_retention_days: 7
+  
+  fact:
+    importance_base: 0.8
+    decay_rate: 0.01
+    max_retention_days: 90
+  
+  preference:
+    importance_base: 0.9
+    decay_rate: 0.005
+    max_retention_days: 180
+  
+  emotion:
+    importance_base: 0.7
+    decay_rate: 0.02
+    max_retention_days: 30
+  
+  context:
+    importance_base: 0.6
+    decay_rate: 0.03
+    max_retention_days: 14
+
+# 高级功能配置
+advanced_features:
+  # 语义搜索（未来功能）
+  semantic_search:
+    enabled: false
+    model_name: "sentence-transformers/all-MiniLM-L6-v2"
+    similarity_threshold: 0.7
+  
+  # 记忆聚类
+  memory_clustering:
+    enabled: false
+    cluster_similarity_threshold: 0.8
+    max_clusters: 20
+  
+  # 自动摘要
+  auto_summarization:
+    enabled: true
+    summary_length: 100
+    key_points_count: 5
+  
+  # 情感分析
+  emotion_analysis:
+    enabled: false
+    emotion_types: ["positive", "negative", "neutral"]
+  
+  # 主题提取
+  topic_extraction:
+    enabled: false
+    max_topics: 10
+    topic_similarity_threshold: 0.6
+
+# 调试和日志配置
+debug:
+  enable_memory_debug_logs: true
+  log_memory_operations: true
+  log_compression_operations: true
+  log_retrieval_operations: true
+  memory_operation_timeout: 30
+  
+# 备份和恢复配置
+backup:
+  auto_backup: true
+  backup_interval_hours: 24
+  backup_retention_days: 7
+  backup_path: "memory/backups/"
+  
+# 性能监控配置
+monitoring:
+  enable_performance_tracking: true
+  track_memory_usage: true
+  track_compression_performance: true
+  track_retrieval_performance: true
+  performance_log_interval_minutes: 60

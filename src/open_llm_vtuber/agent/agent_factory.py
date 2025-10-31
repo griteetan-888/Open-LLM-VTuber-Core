@@ -56,10 +56,41 @@ class AgentFactory:
                     f"Configuration not found for LLM provider: {llm_provider}"
                 )
 
-            # Create the stateless LLM
-            llm = StatelessLLMFactory.create_llm(
-                llm_provider=llm_provider, system_prompt=system_prompt, **llm_config
-            )
+            # 检查是否启用流式API
+            if basic_memory_settings.get("enable_streaming", False) and llm_provider == "openai_llm":
+                logger.info("🚀 启用流式OpenAI LLM")
+                from .stateless_llm.streaming_openai_llm import StreamingOpenAILLM
+                
+                # 创建流式LLM
+                llm = StreamingOpenAILLM(
+                    model=llm_config.get("model", "gpt-3.5-turbo"),
+                    base_url=llm_config.get("base_url", "https://api.openai.com/v1"),
+                    llm_api_key=llm_config.get("llm_api_key", ""),
+                    temperature=llm_config.get("temperature", 0.6),
+                    max_tokens=llm_config.get("max_tokens", 500),
+                    timeout=llm_config.get("timeout", 10),
+                    retry_count=llm_config.get("retry_count", 1),
+                    # 流式配置
+                    stream=llm_config.get("stream", True),
+                    stream_chunk_size=llm_config.get("stream_chunk_size", 8),
+                    stream_buffer_size=llm_config.get("stream_buffer_size", 3),
+                    first_response_timeout=llm_config.get("first_response_timeout", 200),
+                    enable_streaming_tts=llm_config.get("enable_streaming_tts", True),
+                    tts_stream_delay=llm_config.get("tts_stream_delay", 50),
+                    # 流式优化
+                    streaming_optimization=llm_config.get("streaming_optimization", True),
+                    chunk_processing_parallel=llm_config.get("chunk_processing_parallel", True),
+                    immediate_audio_playback=llm_config.get("immediate_audio_playback", True),
+                    # 性能优化
+                    max_wait_time=llm_config.get("max_wait_time", 3),
+                    connection_pool_size=llm_config.get("connection_pool_size", 5),
+                    keep_alive=llm_config.get("keep_alive", True),
+                )
+            else:
+                # 使用标准LLM
+                llm = StatelessLLMFactory.create_llm(
+                    llm_provider=llm_provider, system_prompt=system_prompt, **llm_config
+                )
 
             tool_prompts = kwargs.get("system_config", {}).get("tool_prompts", {})
 
