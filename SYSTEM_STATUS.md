@@ -45,7 +45,7 @@ python3 test_basic_system.py
 
 **2. 系统健康检查**
 ```bash
-python3 start_system.py
+python3 test_basic_system.py
 ```
 
 **3. 完整系统启动**
@@ -97,7 +97,7 @@ python3 test_memory_system.py
 - 响应时间控制在2-3秒内
 
 **4. 监控和维护**
-- 使用 `python3 start_system.py` 检查系统状态
+- 使用 `python3 test_basic_system.py` 检查系统状态
 - 使用 `python3 test_memory_system.py` 测试记忆系统
 - 查看日志了解系统运行情况
 

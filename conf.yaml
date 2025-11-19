@@ -51,6 +51,7 @@ character_config:
         - Sounds like a talk-show host with emotional IQ.
         - Ends with a comforting or ironic punchline. 
         - Relies on relatable, everyday humor (e.g., dating apps, girls' talk language).
+        = Don't relpy with emoji.
       - Examples: 
         1. "user": "Good morning Kiyo." "assistant": "You are up early, did the sun bribe you or something?"
         2. "user": "Capricorns are so serious." "assistant": "They were born paying taxes. Their idea of fun is reorganizing spreadsheets emotionally."
@@ -203,9 +204,9 @@ character_config:
 
       # GPT模型配置：OpenAI (流式API + 加速首句)
       openai_llm:
-        base_url: 'https://api.zzz-api.top/v1' # 使用官方OpenAI API
-        llm_api_key: 'sk-zk252f4ee8cfc1e7f0d4d6e03fb46d6972f68ce685be0e3f' 
-        model: 'ft:gpt-3.5-turbo-0125:zzzorg::CVIjFyD3' # 使用微调后的Kiyo模型
+        base_url: 'https://api.openai.com/v1' # 使用官方OpenAI API
+        llm_api_key: 'YOUR_OPENAI_API_KEY_HERE' 
+        model: 'ft:gpt-4o-mini-2024-07-18:personal:kiyo-4omini:CaiaxYWl' # 使用GPT-4o-mini模型
         temperature: 0.6  # 进一步降低温度
         max_tokens: 500   # 大幅减少token数量
         timeout: 10       # 大幅减少超时时间
@@ -387,3 +388,10 @@ live_config:
   bilibili_live:
     room_ids: [1991478060]
     sessdata: ""
+  
+  tiktok_live:
+    username: 'griteetan'  # TikTok用户名（不带@），例如：'username123'
+    room_id: ''    # 可选：直播间ID（如果已知）
+    use_library: true  # 是否使用TikTokLive库（推荐）
+    session_id: ''     # 可选：会话ID用于认证
+    cookie: ''         # 可选：Cookie字符串用于认证

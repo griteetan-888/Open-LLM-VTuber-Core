@@ -33,9 +33,9 @@ mkdir -p logs models cache chat_history
 
 # 检查配置文件
 if [ ! -f "conf.yaml" ]; then
-    if [ -f "conf_simple.yaml" ]; then
+    if [ -f "conf.yaml.example" ]; then
         echo "⚙️  创建配置文件..."
-        cp conf_simple.yaml conf.yaml
+        cp conf.yaml.example conf.yaml
     else
         echo "❌ 配置文件不存在"
         exit 1

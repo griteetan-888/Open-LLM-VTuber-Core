@@ -67,7 +67,7 @@ src/open_llm_vtuber/
 ### 功能测试
 - `test_basic_system.py` - 基础系统测试
 - `test_continuous_conversation.py` - 连续性对话测试
-- `test_streaming_api.py` - 流式API测试
+- `test_real_streaming_api.py` - 流式API测试
 - `test_memory_system.py` - 记忆系统测试
 
 ### 性能测试
@@ -96,7 +96,7 @@ src/open_llm_vtuber/
 ### 主要启动文件
 - `start.py` - 主启动脚本
 - `run_server.py` - 服务器启动
-- `start_system.py` - 系统启动
+- `start_memory_system.py` - 记忆系统启动
 
 ### 设置脚本
 - `setup_memory_system.sh` - 记忆系统设置

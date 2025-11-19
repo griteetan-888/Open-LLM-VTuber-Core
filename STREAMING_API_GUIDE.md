@@ -111,7 +111,7 @@ edge_tts:
 ### 运行测试脚本
 
 ```bash
-python3 test_streaming_api.py
+python3 test_real_streaming_api.py
 ```
 
 ### 测试结果

@@ -27,7 +27,7 @@
 
 ### 4. 配置文件
 - **conf.yaml**: 主配置文件
-- **conf_simple.yaml**: 简化配置模板
+- **conf.yaml.example**: 配置示例模板
 - **model_dict.json**: 模型字典配置
 
 ## 新增的辅助文件
@@ -115,7 +115,7 @@ Open-LLM-VTuber-Core/
 ├── cache/                 # 缓存文件
 ├── chat_history/          # 聊天历史
 ├── conf.yaml              # 主配置文件
-├── conf_simple.yaml       # 简化配置模板
+├── conf.yaml.example      # 配置示例模板
 ├── model_dict.json        # 模型字典
 ├── requirements.txt       # 依赖文件
 ├── start.py               # 启动脚本

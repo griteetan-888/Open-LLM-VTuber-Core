@@ -84,10 +84,10 @@ def create_config():
     print("⚙️  设置配置文件...")
     
     if not Path("conf.yaml").exists():
-        if Path("conf_simple.yaml").exists():
-            # 复制简化配置作为默认配置
+        if Path("conf.yaml.example").exists():
+            # 复制配置示例作为默认配置
             import shutil
-            shutil.copy("conf_simple.yaml", "conf.yaml")
+            shutil.copy("conf.yaml.example", "conf.yaml")
             print("✅ 已创建默认配置文件 conf.yaml")
         else:
             print("⚠️  未找到配置文件模板")

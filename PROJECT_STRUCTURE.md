@@ -170,7 +170,7 @@ src/open_llm_vtuber/
 │   └── x_tts.py                   # X TTS
 ├── 📁 utils/                       # 工具函数
 │   ├── __init__.py
-│   ├── install_utils.py           # 安装工具
+│   └── (安装工具已移除)
 │   ├── sentence_divider.py        # 句子分割器
 │   ├── stream_audio.py            # 流式音频
 │   └── tts_preprocessor.py        # TTS预处理器
@@ -201,7 +201,6 @@ src/open_llm_vtuber/
 根目录配置文件:
 ├── conf.yaml                      # 主配置文件 (当前使用)
 ├── conf.yaml.example              # 配置示例文件
-├── conf_simple.yaml               # 简化配置文件
 ├── memory_config.yaml             # 记忆系统配置
 └── model_dict.json                # 模型字典
 ```
@@ -226,7 +225,7 @@ src/open_llm_vtuber/
 根目录测试文件:
 ├── test_basic_system.py            # 基础系统测试
 ├── test_continuous_conversation.py # 连续性对话测试
-├── test_streaming_api.py           # 流式API测试
+├── test_real_streaming_api.py      # 流式API测试
 ├── test_memory_system.py           # 记忆系统测试
 ├── test_2_3_seconds.py             # 2-3秒响应测试
 ├── performance_test.py             # 性能测试
@@ -249,7 +248,6 @@ src/open_llm_vtuber/
 ```
 根目录启动文件:
 ├── start.py                        # 主启动脚本
-├── start_system.py                 # 系统启动脚本
 ├── start_memory_system.py          # 记忆系统启动脚本
 ├── run_server.py                   # 服务器启动脚本
 └── install.py                      # 安装脚本
