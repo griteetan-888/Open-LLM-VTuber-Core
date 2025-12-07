@@ -34,7 +34,38 @@ pip install -r requirements.txt
 
 ### 2. 配置设置
 
-编辑 `conf.yaml` 文件，配置你的API密钥和模型设置：
+#### 方法 1：使用环境变量（推荐，更安全）
+
+1. 复制环境变量模板：
+```bash
+cp .env.example .env
+```
+
+2. 编辑 `.env` 文件，填入你的 API 密钥：
+```bash
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+3. 在 `conf.yaml` 中使用环境变量：
+```yaml
+character_config:
+  agent_config:
+    agent_settings:
+      basic_memory_agent:
+        llm_provider: 'openai_llm'  # 或 'ollama_llm'
+    
+    llm_configs:
+      openai_llm:
+        base_url: 'https://api.openai.com/v1'
+        llm_api_key: '${OPENAI_API_KEY}'  # 从环境变量读取
+        model: 'gpt-3.5-turbo'  # 使用标准GPT-3.5模型
+```
+
+**详细说明请查看 [ENV_SETUP_GUIDE.md](./ENV_SETUP_GUIDE.md)**
+
+#### 方法 2：直接在 conf.yaml 中配置
+
+编辑 `conf.yaml` 文件，直接填入 API 密钥：
 
 ```yaml
 character_config:

@@ -8,6 +8,14 @@ import re
 import chardet
 from loguru import logger
 
+# Try to import dotenv, but don't fail if it's not installed
+try:
+    from dotenv import load_dotenv
+    DOTENV_AVAILABLE = True
+except ImportError:
+    DOTENV_AVAILABLE = False
+    logger.warning("python-dotenv not installed. Install it with: pip install python-dotenv")
+
 from .main import Config
 
 T = TypeVar("T", bound=BaseModel)
@@ -17,6 +25,9 @@ def read_yaml(config_path: str) -> Dict[str, Any]:
     """
     Read the specified YAML configuration file with environment variable substitution
     and guess encoding. Return the configuration data as a dictionary.
+    
+    This function automatically loads .env file if python-dotenv is installed.
+    Environment variables can be referenced in YAML using ${VAR_NAME} syntax.
 
     Args:
         config_path: Path to the YAML configuration file.
@@ -28,6 +39,20 @@ def read_yaml(config_path: str) -> Dict[str, Any]:
         FileNotFoundError: If the configuration file is not found.
         IOError: If the configuration file cannot be read.
     """
+    # Load .env file if dotenv is available
+    if DOTENV_AVAILABLE:
+        env_path = Path(config_path).parent / ".env"
+        if env_path.exists():
+            load_dotenv(env_path)
+            logger.debug(f"Loaded environment variables from {env_path}")
+        else:
+            # Also try loading from current directory
+            load_dotenv()
+    elif os.path.exists(".env"):
+        logger.warning(
+            ".env file found but python-dotenv is not installed. "
+            "Install it with: pip install python-dotenv"
+        )
 
     if not os.path.exists(config_path):
         raise FileNotFoundError(f"Configuration file not found: {config_path}")

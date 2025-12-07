@@ -187,7 +187,7 @@ character_config:
       # GPT模型配置：OpenAI (标准GPT-3.5模型)
       openai_llm:
         base_url: 'https://api.openai.com/v1' # 使用官方OpenAI API
-        llm_api_key: 'YOUR_OPENAI_API_KEY_HERE' # 请替换为您的API密钥
+        llm_api_key: '${OPENAI_API_KEY}' # 从环境变量读取，或直接填入API密钥
         model: 'gpt-3.5-turbo' # 使用标准GPT-3.5模型
         temperature: 0.8
         max_tokens: 1000
