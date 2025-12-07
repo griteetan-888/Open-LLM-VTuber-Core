@@ -205,7 +205,7 @@ character_config:
       # GPT模型配置：OpenAI (流式API + 加速首句)
       openai_llm:
         base_url: 'https://api.openai.com/v1' # 使用官方OpenAI API
-        llm_api_key: 'YOUR_OPENAI_API_KEY_HERE' 
+        llm_api_key: '${OPENAI_API_KEY}' # 从环境变量读取，或直接填入API密钥 
         model: 'ft:gpt-4o-mini-2024-07-18:personal:kiyo-4omini:CaiaxYWl' # 使用GPT-4o-mini模型
         temperature: 0.6  # 进一步降低温度
         max_tokens: 500   # 大幅减少token数量
