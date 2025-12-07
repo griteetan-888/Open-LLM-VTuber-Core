@@ -66,7 +66,15 @@ def read_yaml(config_path: str) -> Dict[str, Any]:
 
     def replacer(match):
         env_var = match.group(1)
-        return os.getenv(env_var, match.group(0))
+        env_value = os.getenv(env_var)
+        if env_value is None:
+            # Environment variable not set - raise an error
+            raise ValueError(
+                f"Environment variable '{env_var}' is not set. "
+                f"Please set it in your .env file or system environment. "
+                f"See .env.example for reference."
+            )
+        return env_value
 
     content = pattern.sub(replacer, content)
 
