@@ -1,0 +1,22 @@
+[Unit]
+Description=Open-LLM-VTuber Server
+After=network.target
+
+[Service]
+Type=simple
+User=your-username
+WorkingDirectory=/path/to/Open-LLM-VTuber-Core
+Environment="PATH=/path/to/Open-LLM-VTuber-Core/venv/bin"
+ExecStart=/path/to/Open-LLM-VTuber-Core/venv/bin/python /path/to/Open-LLM-VTuber-Core/run_server.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# 环境变量（如果需要）
+# Environment="HF_HOME=/path/to/Open-LLM-VTuber-Core/models"
+# Environment="MODELSCOPE_CACHE=/path/to/Open-LLM-VTuber-Core/models"
+
+[Install]
+WantedBy=multi-user.target
+
